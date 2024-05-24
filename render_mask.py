@@ -55,6 +55,8 @@ def rendering_mask(dataset, opt, pipe, checkpoint, codebook_pth, test_set, texts
     
     ouptut_dir = os.path.dirname(checkpoint)
     
+    print(f"Rendering to {ouptut_dir}")
+    
     eval_name = f"open_new_eval_{com_type}_s{scale}_a{str(a).replace('.', '')}"
     gt_images_pth = f"{ouptut_dir}/{eval_name}/gt_images"
     pred_images_pth = f"{ouptut_dir}/{eval_name}/pred_images"
@@ -62,6 +64,7 @@ def rendering_mask(dataset, opt, pipe, checkpoint, codebook_pth, test_set, texts
     rele_pth = f"{ouptut_dir}/{eval_name}/relevancy"
     
     os.makedirs(gt_images_pth, exist_ok=True)
+    print(f"Created {gt_images_pth}")
     os.makedirs(pred_images_pth, exist_ok=True)
     os.makedirs(pred_segs_pth, exist_ok=True)
     os.makedirs(rele_pth, exist_ok=True)

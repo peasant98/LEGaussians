@@ -146,6 +146,7 @@ def readColmapSceneInfo(path, images, eval, test_set, indices_path, llffhold=8):
         clip_feature_indices_file = os.path.join(path, reading_dir, indices_path)
         indices = torch.load(clip_feature_indices_file).detach().cpu().numpy()
         # namedtuple is immutable, so we need to create a new one
+        print(len(cam_infos), len(indices))
         for idx, cam_info in enumerate(cam_infos):
             cam_info = cam_info._replace(language_feature_indices=indices[idx])
             cam_infos[idx] = cam_info

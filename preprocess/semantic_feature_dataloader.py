@@ -161,6 +161,8 @@ class PyramidSematicFeatureDataset(Dataset):
         torch.cuda.empty_cache()
         
         self.data = self.data.contiguous().permute(0, 2, 3, 1)
+        torch.cuda.empty_cache()
+        
         mask = torch.isnan(self.data) | torch.isinf(self.data)
         self.data[mask] = 0
 

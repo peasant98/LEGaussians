@@ -60,6 +60,7 @@ class Trainer:
         return dataset_cls(self.args.image_dir)
 
     def train(self):
+        print("Starting training...")
         data_loader = DataLoader(self.select_dataset(), batch_size=self.args.batch_size, shuffle=self.args.shuffle)
         color_map = generate_colors(self.args.n_e)
         model, optimizer, scheduler = self.setup_training()
@@ -93,6 +94,7 @@ class Trainer:
 
             self.write_tensorboard(metric_loss, loss, loss_cos, loss_kl, load_balancing_loss, d, loss_d, perplexity)
             if self.tensorboard_step % self.args.interv_n == 0:
+                print('Saving model...')
                 self.save_model(model, encoding_indices_tensor, color_map)
             self.tensorboard_step += 1
                 
@@ -106,6 +108,7 @@ class Trainer:
 
     def save_model(self, model, encoding_indices, color_map):
         output_dir = self.args.output_codebook_dir if self.args.output_codebook_dir else self.args.image_dir
+        print(f'Saving model to {output_dir}...')
         torch.save(model.state_dict(), os.path.join(output_dir, f'{self.prefix}_codebook.pt'))
         torch.save(encoding_indices, os.path.join(output_dir, f'{self.prefix}_encoding_indices.pt'))
         for img_idx in range(0, 5):
@@ -138,7 +141,7 @@ def parse_args():
     parser.add_argument('--beta', type=float, default=0.)
     parser.add_argument('--kl_beta', type=float, default=1)
     parser.add_argument('--device', type=str, default='cuda')
-    parser.add_argument('--batch_size', type=int, default=32)
+    parser.add_argument('--batch_size', type=int, default=16)
     parser.add_argument('--shuffle', type=bool, default=False)
     parser.add_argument('--epoch', type=int, default=100)
     parser.add_argument('--interv_n', type=int, default=20)
